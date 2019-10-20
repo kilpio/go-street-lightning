@@ -9,7 +9,7 @@ import (
 	"log"
 	"net/http"
 
-	//https://github.com/etcd-io/bbolt
+	//https://github.com/etcd-io/bbolt	
 	bolt "go.etcd.io/bbolt"
 )
 
@@ -74,7 +74,7 @@ func main() {
 		days := make([]Lightning, 0)
 
 		
-		//unmarshalling thó days slice elements
+		//unmarshalling thï¿½ days slice elements
 		json.Unmarshal(MyJSON, &days)
 
 		
