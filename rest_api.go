@@ -7,9 +7,7 @@
 		"net/http"
 		"github.com/gorilla/mux"
 		bolt "go.etcd.io/bbolt"
-	//	"bytes"
 		"encoding/json"
-	//	"io/ioutil"
 	)
 
 	//Lightning type for mosdata records
@@ -28,16 +26,13 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 func returnLightning(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
-//header('Access-Control-Allow-Origin: *');
-//header('Content-Type: application/json');
 
 	params := mux.Vars(r)
-	date := params["date"]
-	//fmt.Fprintln(string(date))	
+	date := params["date"]	
 	
 	selected_date := string(date)
 
-	db, err := bolt.Open(`C:\Users\kilpio\go\zip\my.db`, 0600, nil)
+	db, err := bolt.Open(`my.db`, 0600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,7 +43,7 @@ func returnLightning(w http.ResponseWriter, r *http.Request) {
 		v := b.Get([]byte(selected_date))
 		var dada Lightning
 		json.Unmarshal(v, &dada)
-	//	fmt.Printf("%s", dada.DurationOfLighting)
+	
 
 	response := `{"Lightning Durtion":"`+ string(dada.DurationOfLighting) + `",`
 	response  += `"OnTime":"`+ string(dada.OnTime) + `",`
@@ -57,9 +52,6 @@ func returnLightning(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w,response)
 		return nil
 	})
-	
-	
-	
 	
 } 
 

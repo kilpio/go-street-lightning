@@ -1,0 +1,65 @@
+ <html>
+ <head>
+ <title>
+ </title>
+ </head>
+ <body>
+<link rel="stylesheet" type="text/css" href="frames.css">
+<link href="/the-datepicker.css" rel="stylesheet" />
+<script src="/the-datepicker.js"></script>
+
+
+         <div class="map">
+  <div  class="pin" style="left:53%;top:72.5%; font-family: 'mathletebulky'; font-size: 3.2em" id="OnTime">Undef</div>
+  <div class="pin" style="left:28%;top:73.5%; font-family: 'mathletebulky'; font-size: 3.2em" id="OffTime">Undef</div>
+  <div class="pin" style="left:40%;top:89%; font-family: 'mathletebulky'; font-size: 2.7em" id="Lightning Durtion">Undef</div>
+  <div class="pin" style="left:8.5%;top:76%;" id="Calendar"><input type="text" style= "font-family: 'mathletebulky'; font-size: 2.1em" size="10" id="calendar"></div>
+
+          </div>
+
+
+
+<!--<input type="text" id="calendar"-->
+<script>
+const input = document.getElementById('calendar');
+const datepicker = new TheDatepicker.Datepicker(calendar);
+datepicker.options.setInputFormat('d.m.Y');
+datepicker.options.onSelect((event, day, previousDay) => {fillDataFields(document.getElementById('calendar').value)});
+datepicker.render();
+</script>
+
+<script type="text/javascript">
+async function getUserAsync(datestr) 
+{
+  let response = await fetch('http://127.0.0.1:8080/Lightning/'+ datestr);
+  let data = await response.json();
+  return data;
+}
+
+var onTimeElement = document.getElementById("OnTime");
+var offTimeElement = document.getElementById("OffTime");
+var durationTimeElement = document.getElementById("Lightning Durtion");
+var selectedDate= document.getElementById("calendar"); 
+
+</script>
+
+<script> 
+function fillDataFields(datestring) {
+getUserAsync(datestring)
+    .then(data => { console.log(data); onTimeElement.innerHTML=''+ data.OnTime; 
+          offTimeElement.innerHTML=''+ data.OffTime; 
+          durationTimeElement.innerHTML='Duration: '+ data["Lightning Durtion"];});
+}
+
+</script>
+
+<script>
+var d = new Date();
+var datestring = ("0" + d.getDate()).slice(-2) + "." + ("0"+(d.getMonth()+1)).slice(-2) + "." + d.getFullYear();
+fillDataFields(datestring);                            
+document.getElementById('calendar').value = datestring;
+
+</script>
+</body>
+
+</html>
